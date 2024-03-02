@@ -28,6 +28,7 @@ import asyncio, logging
 import tgcrypto
 from pyromod import listen
 from logging.handlers import RotatingFileHandler
+import aioschedule
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(
@@ -49,33 +50,27 @@ AUTH_USERS = [ int(chat) for chat in Config.AUTH_USERS.split(",") if chat != '']
 prefixes = ["/", "~", "?", "!"]
 
 plugins = dict(root="plugins")
-# ... (previous code)
-
-# ... (previous code)
+async def sync_time():
+    await bot.send(raw.functions.Ping(ping_id=0))
 
 if __name__ == "__main__":
-    bot_running = False  # Variable to track if the bot is running
-
-    bot = Client(
-        "StarkBot",
-        bot_token=Config.BOT_TOKEN,
-        api_id=Config.API_ID,
-        api_hash=Config.API_HASH,
-        sleep_threshold=20,
-        plugins=plugins,
-        workers=50
-    )
+    # ... (previous code)
 
     async def main():
-        global bot_running  # Use the global variable
-
         try:
             await bot.start()
             bot_info = await bot.get_me()
             LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
-            bot_running = True  # Set the flag when the bot is running
+
+            # Schedule time synchronization every 5 minutes
+            aioschedule.every(5).minutes.do(sync_time)
+
+            # Start the scheduler
+            aioschedule.start()
+
             await idle()
         finally:
+            aioschedule.clear()
             if bot_running:
                 await bot.stop()
                 LOGGER.info(f"<---Bot Stopped--->")
