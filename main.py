@@ -20,7 +20,6 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE
 
-
 import os
 from config import Config
 from pyrogram import Client, idle
@@ -43,43 +42,53 @@ logging.basicConfig(
     ],
 )
 
-# Auth Users
-AUTH_USERS = [ int(chat) for chat in Config.AUTH_USERS.split(",") if chat != '']
+bot_running = False  # Variable to track if the bot is running
+bot = None  # Initialize bot variable
 
-# Prefixes 
+# Auth Users
+AUTH_USERS = [int(chat) for chat in Config.AUTH_USERS.split(",") if chat != '']
+
+# Prefixes
 prefixes = ["/", "~", "?", "!"]
 
 plugins = dict(root="plugins")
-async def sync_time():
-    await bot.send(raw.functions.Ping(ping_id=0))
-
-# ... (previous imports)
-
-bot_running = False  # Variable to track if the bot is running
-
-# ... (previous code)
 
 if __name__ == "__main__":
+    bot = Client(
+        "StarkBot",
+        bot_token=Config.BOT_TOKEN,
+        api_id=Config.API_ID,
+        api_hash=Config.API_HASH,
+        sleep_threshold=20,
+        plugins=plugins,
+        workers=50
+    )
+
+    async def sync_time():
+        await bot.send(raw.functions.Ping(ping_id=0))
+
     async def main():
-        global bot_running  # Use the global variable
+        global bot_running, bot  # Use the global variables
 
         try:
             await bot.start()
             bot_info = await bot.get_me()
             LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
 
-            # Send a ping to synchronize the client's time
-            await bot.send(raw.functions.Ping(ping_id=0))
+            # Schedule time synchronization every 5 minutes
+            aioschedule.every(5).minutes.do(sync_time)
+
+            # Start the scheduler
+            aioschedule.start()
 
             bot_running = True  # Set the flag when the bot is running
             await idle()
         finally:
+            aioschedule.clear()
             if bot_running:
                 await bot.stop()
                 LOGGER.info(f"<---Bot Stopped--->")
 
-    try:
-        asyncio.get_event_loop().run_until_complete(main())
-    except Exception as e:
-        LOGGER.error(f"Error in main: {e}")
-
+    # Explicitly create and set the event loop
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
