@@ -24,10 +24,9 @@ import os
 from config import Config
 from pyrogram import Client, idle
 import asyncio, logging
-import tgcrypto
-from pyromod import listen
 from logging.handlers import RotatingFileHandler
-import aioschedule
+from pyrogram.raw import functions
+from datetime import datetime
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(
@@ -42,16 +41,11 @@ logging.basicConfig(
     ],
 )
 
-bot_running = False  # Variable to track if the bot is running
-bot = None  # Initialize bot variable
-
 # Auth Users
 AUTH_USERS = [int(chat) for chat in Config.AUTH_USERS.split(",") if chat != '']
 
 # Prefixes
 prefixes = ["/", "~", "?", "!"]
-
-plugins = dict(root="plugins")
 
 if __name__ == "__main__":
     bot = Client(
@@ -60,34 +54,24 @@ if __name__ == "__main__":
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
         sleep_threshold=20,
-        plugins=plugins,
+        plugins=dict(root="plugins"),
         workers=50
     )
 
-    async def sync_time():
-        await bot.send(raw.functions.Ping(ping_id=0))
-
     async def main():
-        global bot_running, bot  # Use the global variables
-
         try:
             await bot.start()
             bot_info = await bot.get_me()
             LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
 
-            # Schedule time synchronization every 5 minutes
-            aioschedule.every(5).minutes.do(sync_time)
+            # Synchronize time every 5 minutes
+            while True:
+                await asyncio.sleep(300)  # sleep for 5 minutes
+                await bot.send(functions.Ping(ping_id=int(datetime.now().timestamp())))
 
-            # Start the scheduler
-            aioschedule.start()
-
-            bot_running = True  # Set the flag when the bot is running
-            await idle()
         finally:
-            aioschedule.clear()
-            if bot_running:
-                await bot.stop()
-                LOGGER.info(f"<---Bot Stopped--->")
+            await bot.stop()
+            LOGGER.info(f"<---Bot Stopped--->")
 
     # Explicitly create and set the event loop
     loop = asyncio.get_event_loop()
