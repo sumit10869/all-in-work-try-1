@@ -51,7 +51,11 @@ prefixes = ["/", "~", "?", "!"]
 plugins = dict(root="plugins")
 # ... (previous code)
 
+# ... (previous code)
+
 if __name__ == "__main__":
+    bot_running = False  # Variable to track if the bot is running
+
     bot = Client(
         "StarkBot",
         bot_token=Config.BOT_TOKEN,
@@ -63,14 +67,17 @@ if __name__ == "__main__":
     )
 
     async def main():
+        global bot_running  # Use the global variable
+
         try:
             await bot.start()
             bot_info = await bot.get_me()
             LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
+            bot_running = True  # Set the flag when the bot is running
             await idle()
         finally:
-            await bot.stop()
-            LOGGER.info(f"<---Bot Stopped--->")
+            if bot_running:
+                await bot.stop()
+                LOGGER.info(f"<---Bot Stopped--->")
 
     asyncio.get_event_loop().run_until_complete(main())
-
