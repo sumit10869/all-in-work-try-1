@@ -53,21 +53,13 @@ plugins = dict(root="plugins")
 async def sync_time():
     await bot.send(raw.functions.Ping(ping_id=0))
 
+# ... (previous imports)
+
+bot_running = False  # Variable to track if the bot is running
+
 # ... (previous code)
 
-bot_running = False  # Move the variable to the global scope
-
 if __name__ == "__main__":
-    bot = Client(
-        "StarkBot",
-        bot_token=Config.BOT_TOKEN,
-        api_id=Config.API_ID,
-        api_hash=Config.API_HASH,
-        sleep_threshold=20,
-        plugins=plugins,
-        workers=50
-    )
-
     async def main():
         global bot_running  # Use the global variable
 
@@ -75,6 +67,10 @@ if __name__ == "__main__":
             await bot.start()
             bot_info = await bot.get_me()
             LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
+
+            # Send a ping to synchronize the client's time
+            await bot.send(raw.functions.Ping(ping_id=0))
+
             bot_running = True  # Set the flag when the bot is running
             await idle()
         finally:
@@ -86,3 +82,4 @@ if __name__ == "__main__":
         asyncio.get_event_loop().run_until_complete(main())
     except Exception as e:
         LOGGER.error(f"Error in main: {e}")
+
