@@ -56,9 +56,13 @@ if __name__ == "__main__":
                 LOGGER.info(f"Time offset with server: {time_offset} seconds")
                 await asyncio.sleep(300)  # sleep for 5 minutes
 
+        except Exception as e:
+            LOGGER.exception(f"An exception occurred: {e}")
+
         finally:
-            await bot.stop()
-            LOGGER.info(f"<---Bot Stopped--->")
+            if bot.is_connected:
+                await bot.stop()
+                LOGGER.info(f"<---Bot Stopped--->")
 
     # Explicitly create and set the event loop
     loop = asyncio.get_event_loop()
