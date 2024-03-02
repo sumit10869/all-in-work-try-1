@@ -1,32 +1,12 @@
-#  MIT License
-#
-#  Copyright (c) 2019-present Dan <https://github.com/delivrance>
-#
-#  Permission is hereby granted, free of charge, to any person obtaining a copy
-#  of this software and associated documentation files (the "Software"), to deal
-#  in the Software without restriction, including without limitation the rights
-#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#  copies of the Software, and to permit persons to whom the Software is
-#  furnished to do so, subject to the following conditions:
-#
-#  The above copyright notice and this permission notice shall be included in all
-#  copies or substantial portions of the Software.
-#
-#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#  SOFTWARE
-
 import os
 from config import Config
 from pyrogram import Client, idle
-import asyncio, logging
+import asyncio
+import logging
 from logging.handlers import RotatingFileHandler
 from pyrogram.raw import functions
 from datetime import datetime
+import time
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(
@@ -58,16 +38,23 @@ if __name__ == "__main__":
         workers=50
     )
 
+    async def sync_time():
+        local_time = int(time.time())
+        server_time = int((await bot.send(functions.Ping(ping_id=0))).ping_id)
+        time_difference = server_time - local_time
+        time_offset = int(time_difference / 2)
+        return time_offset
+
     async def main():
         try:
             await bot.start()
             bot_info = await bot.get_me()
             LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
 
-            # Synchronize time every 5 minutes
             while True:
+                time_offset = await sync_time()
+                LOGGER.info(f"Time offset with server: {time_offset} seconds")
                 await asyncio.sleep(300)  # sleep for 5 minutes
-                await bot.send(functions.Ping(ping_id=int(datetime.now().timestamp())))
 
         finally:
             await bot.stop()
