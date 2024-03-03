@@ -47,3 +47,4 @@ restart - To restart the bot
 
 ## License
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/cryptostark/All_In_One/blob/main/LICENCE)
+failed time sync issur msg id low
