@@ -1,12 +1,33 @@
+#  MIT License
+#
+#  Copyright (c) 2019-present Dan <https://github.com/delivrance>
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all
+#  copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#  SOFTWARE
+
+
 import os
 from config import Config
 from pyrogram import Client, idle
-import asyncio
-import logging
+import asyncio, logging
+import tgcrypto
+from pyromod import listen
 from logging.handlers import RotatingFileHandler
-from pyrogram.raw import functions
-from datetime import datetime
-import time
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(
@@ -22,48 +43,28 @@ logging.basicConfig(
 )
 
 # Auth Users
-AUTH_USERS = [int(chat) for chat in Config.AUTH_USERS.split(",") if chat != '']
+AUTH_USERS = [ int(chat) for chat in Config.AUTH_USERS.split(",") if chat != '']
 
-# Prefixes
+# Prefixes 
 prefixes = ["/", "~", "?", "!"]
 
-if __name__ == "__main__":
+plugins = dict(root="plugins")
+if __name__ == "__main__" :
     bot = Client(
         "StarkBot",
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
         sleep_threshold=20,
-        plugins=dict(root="plugins"),
-        workers=50
+        plugins=plugins,
+        workers = 50
     )
-
-    async def sync_time():
-        local_time = int(time.time())
-        server_time = int((await bot.send(functions.Ping(ping_id=0))).ping_id)
-        time_difference = server_time - local_time
-        time_offset = int(time_difference / 2)
-        return time_offset
-
+    
     async def main():
-        try:
-            await bot.start()
-            bot_info = await bot.get_me()
-            LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
-
-            while True:
-                time_offset = await sync_time()
-                LOGGER.info(f"Time offset with server: {time_offset} seconds")
-                await asyncio.sleep(300)  # sleep for 5 minutes
-
-        except Exception as e:
-            LOGGER.exception(f"An exception occurred: {e}")
-
-        finally:
-            if bot.is_connected:
-                await bot.stop()
-                LOGGER.info(f"<---Bot Stopped--->")
-
-    # Explicitly create and set the event loop
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+        await bot.start()
+        bot_info  = await bot.get_me()
+        LOGGER.info(f"<--- @{bot_info.username} Started (c) STARKBOT --->")
+        await idle()
+    
+    asyncio.get_event_loop().run_until_complete(main())
+    LOGGER.info(f"<---Bot Stopped-->")
