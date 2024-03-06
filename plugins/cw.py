@@ -332,7 +332,7 @@ BCOV_POLICY = "BCpkADawqM1474MvKwYlMRZNBPoqkJY-UWm7zE1U769d5r5kqTjG0v8L-THXuVZtd
 bc_url = (f"https://edge.api.brightcove.com/playback/v1/accounts/{ACCOUNT_ID}/videos")
 bc_hdr = {"BCOV-POLICY": BCOV_POLICY}
 
-@bot.on_message(filters.command(["cw"]))
+@bot.on_message(filters.command(["cwl"]))
 async def account_login(bot: Client, m: Message):
     global cancel
     cancel = False
@@ -373,7 +373,7 @@ async def account_login(bot: Client, m: Message):
       data["password"] = raw_text.split("*")[1]
       await input1.delete(True)
       s = requests.Session()
-      response = s.post(url = url, headers=headers, json=data, timeout=10)
+      response = s.post(url = url, json=data, timeout=10)
       if response.status_code == 200:
           data = response.json()
           token = data["data"]["token"]
