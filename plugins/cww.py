@@ -60,7 +60,7 @@ async def account_login(bot: Client, m: Message):
     cancel = False
 
     url = "https://elearn.crwilladmin.com/api/v1/login-other"
-    data = {
+    info = {
         "deviceType": "android",
         "password": "",
        # "deviceIMEI": "08750aa91d7387ab",
@@ -95,7 +95,7 @@ async def account_login(bot: Client, m: Message):
       data["password"] = raw_text.split("*")[1]
       await input1.delete(True)
       #s = requests.Session()
-      response = s.post(url = url, json=data, timeout=10)
+      response = s.post(url = url, json=info, timeout=10)
       if response.status_code == 200:
           data = response.json()
           token = data["data"]["token"]
