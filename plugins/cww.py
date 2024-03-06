@@ -66,7 +66,7 @@ async def account_login(bot: Client, m: Message):
        # "deviceIMEI": "08750aa91d7387ab",
         "deviceModel": "Realme RMX2001",
         "deviceVersion": "R(Android 11.0)",
-        "email": "",
+        "email": ""
       #  "deviceToken": "fYdfgaUaQZmYP7vV4r2rjr:APA91bFPn3Z4m_YS8kYQSthrueUh-lyfxLghL9ka-MT0m_4TRtlUu7cy90L8H6VbtWorg95Car6aU9zjA-59bZypta9GNNuAdUxTnIiGFxMCr2G3P4Gf054Kdgwje44XWzS9ZGa4iPZh"
        }
    # headers = {
@@ -103,7 +103,7 @@ async def account_login(bot: Client, m: Message):
       else:
            await m.reply_text(response.status_code)
       #token = "4ffd1627981589c0a1261f7a114fbbf8bc87c6d9"
-      await m.reply_text(f"```{token}```")
+      #await m.reply_text(f"```{token}```")
     else:
       token = raw_text
     html1 = s.get("https://elearn.crwilladmin.com/api/v1/comp/my-batch?&token=" + token).json()
