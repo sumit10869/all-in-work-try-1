@@ -101,7 +101,7 @@ async def account_login(bot: Client, m: Message):
           token = data["data"]["token"]
           await m.reply_text(token)
       else:
-           await m.reply_text(response.text)
+           await m.reply_text(response.json())
       #token = "4ffd1627981589c0a1261f7a114fbbf8bc87c6d9"
       await m.reply_text(f"```{token}```")
     else:
