@@ -101,9 +101,9 @@ async def account_login(bot: Client, m: Message):
           token = data["data"]["token"]
           await m.reply_text(token)
       else:
-           await m.reply_text(token)
+           await m.reply_text(data)
       #token = "4ffd1627981589c0a1261f7a114fbbf8bc87c6d9"
-      await m.reply_text(f"```{token}```")
+    #  await m.reply_text(f"```{token}```")
     else:
       token = raw_text
     html1 = s.get("https://elearn.crwilladmin.com/api/v1/comp/my-batch?&token=" + token).json()
