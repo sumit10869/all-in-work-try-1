@@ -63,12 +63,12 @@ async def account_login(bot: Client, m: Message):
     info = {
         "deviceType": "android",
         "password": "",
-       # "deviceIMEI": "08750aa91d7387ab",
-        "deviceModel": "Realme RMX2001",
+        "deviceModel": "Oneplus EB2101",
         "deviceVersion": "R(Android 11.0)",
         "email": ""
+         }
       #  "deviceToken": "fYdfgaUaQZmYP7vV4r2rjr:APA91bFPn3Z4m_YS8kYQSthrueUh-lyfxLghL9ka-MT0m_4TRtlUu7cy90L8H6VbtWorg95Car6aU9zjA-59bZypta9GNNuAdUxTnIiGFxMCr2G3P4Gf054Kdgwje44XWzS9ZGa4iPZh"
-       }
+      
    # headers = {
       #  "Host": "elearn.crwilladmin.com",
       #  "Token": "",
@@ -89,7 +89,7 @@ async def account_login(bot: Client, m: Message):
     editable = await m.reply_text("Send **ID & Password** in this manner otherwise bot will not respond.\n\nSend like this:-  **ID*Password** \n or \nSend **TOKEN** like This this:-  **TOKEN**" )
     input1: Message = await bot.listen(editable.chat.id)
     raw_text = input1.text
-    s = requests.Session()
+    s = requests
     if "*" in raw_text:
       info["email"] = raw_text.split("*")[0]
       info["password"] = raw_text.split("*")[1]
