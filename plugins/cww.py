@@ -69,18 +69,18 @@ async def account_login(bot: Client, m: Message):
         "email": "",
       #  "deviceToken": "fYdfgaUaQZmYP7vV4r2rjr:APA91bFPn3Z4m_YS8kYQSthrueUh-lyfxLghL9ka-MT0m_4TRtlUu7cy90L8H6VbtWorg95Car6aU9zjA-59bZypta9GNNuAdUxTnIiGFxMCr2G3P4Gf054Kdgwje44XWzS9ZGa4iPZh"
        }
-    headers = {
+   # headers = {
         "Host": "elearn.crwilladmin.com",
-        "Token": "",
-        "Usertype": "",
-        "Appver": "1.55",
-        "Apptype": "android",
-        "Content-Type": "application/json; charset=UTF-8",
-        "Content-Length": "313",
-        "Accept-Encoding": "gzip, deflate",
-        "user-agent": "okhttp/5.0.0-alpha.2",
-        'Connection': 'Keep-Alive'
-       }
+      #  "Token": "",
+       # "Usertype": "",
+        #"Appver": "1.55",
+       # "Apptype": "android",
+       # "Content-Type": "application/json; charset=UTF-8",
+        #"Content-Length": "313",
+        #"Accept-Encoding": "gzip, deflate",
+        #"user-agent": "okhttp/5.0.0-alpha.2",
+       # 'Connection': 'Keep-Alive'
+      # }
     #proxy_host = ['47.254.153.200:80']
     #proxies = {
      #       'https': proxy_host,
@@ -95,7 +95,7 @@ async def account_login(bot: Client, m: Message):
       data["password"] = raw_text.split("*")[1]
       await input1.delete(True)
       #s = requests.Session()
-      response = s.post(url = url, headers=headers, json=data, timeout=10)
+      response = s.post(url = url, json=data, timeout=10)
       if response.status_code == 200:
           data = response.json()
           token = data["data"]["token"]
