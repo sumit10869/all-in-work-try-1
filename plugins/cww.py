@@ -96,9 +96,12 @@ async def account_login(bot: Client, m: Message):
       await input1.delete(True)
       #s = requests.Session()
       response = s.post(url = url, headers=headers, json=data, timeout=10)
-      data = response.json()
-      token = data["data"]["token"]
-      await m.reply_text(token)
+      if response.status_code == 200:
+          data = response.json()
+          token = data["data"]["token"]
+          await m.reply_text(token)
+      else:
+           await m.reply_text(response.text)
       #token = "4ffd1627981589c0a1261f7a114fbbf8bc87c6d9"
       await m.reply_text(f"```{token}```")
     else:
