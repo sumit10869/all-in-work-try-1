@@ -106,7 +106,8 @@ async def account_login(bot: Client, m: Message):
       #await m.reply_text(f"```{token}```")
     else:
       token = raw_text
-    html1 = s.get("https://elearn.crwilladmin.com/api/v1/comp/my-batch?&token=" + token).json()
+    html1 = s.get("https://elearn.crwilladmin.com/api/v1/comp/my-batch?&token=" + token)
+    print(html1)
     topicid = html1["data"]["batchData"]
     cool=""
     for data in topicid:
