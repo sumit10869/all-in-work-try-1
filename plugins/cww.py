@@ -146,7 +146,8 @@ async def account_login(bot: Client, m: Message):
         t_name=(data["topicName"].replace(" ",""))
         tid = (data["id"])
         scraper = cloudscraper.create_scraper()
-        ffx = s.get("https://elearn.crwilladmin.com/api/v1/comp/batch-detail/"+raw_text2+"?redirectBy=mybatch&topicId="+tid+"&token="+token, headers=headers).json()
+        ffx = s.get("https://elearn.crwilladmin.com/api/v1/comp/batch-detail/"+raw_text2+"?redirectBy=mybatch&topicId="+tid+"&token="+token, headers=headers)
+        print(ffx)
             #ffx = json.loads(html3)
         vcx =ffx["data"]["class_list"]["batchDescription"]
         vvx =ffx["data"]["class_list"]["classes"]
