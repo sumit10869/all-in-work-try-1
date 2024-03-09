@@ -69,7 +69,7 @@ async def account_login(bot: Client, m: Message):
          }
       #  "deviceToken": "fYdfgaUaQZmYP7vV4r2rjr:APA91bFPn3Z4m_YS8kYQSthrueUh-lyfxLghL9ka-MT0m_4TRtlUu7cy90L8H6VbtWorg95Car6aU9zjA-59bZypta9GNNuAdUxTnIiGFxMCr2G3P4Gf054Kdgwje44XWzS9ZGa4iPZh"
       
-   # headers = {
+    headers = {
       #  "Host": "elearn.crwilladmin.com",
       #  "Token": "",
        # "Usertype": "",
@@ -78,9 +78,9 @@ async def account_login(bot: Client, m: Message):
        # "Content-Type": "application/json; charset=UTF-8",
         #"Content-Length": "313",
         #"Accept-Encoding": "gzip, deflate",
-        #"user-agent": "okhttp/5.0.0-alpha.2",
+        "user-agent": "okhttp/5.0.0-alpha.2",
        # 'Connection': 'Keep-Alive'
-      # }
+       }
     #proxy_host = ['47.254.153.200:80']
     #proxies = {
      #       'https': proxy_host,
@@ -95,7 +95,7 @@ async def account_login(bot: Client, m: Message):
       info["password"] = raw_text.split("*")[1]
       await input1.delete(True)
       s = requests
-      response = s.post(url, json=info, timeout=10)
+      response = s.post(url, headers=headers, json=info, timeout=10)
       if response.status_code == 200:
           data = response.json()
           token = data["data"]["token"]
