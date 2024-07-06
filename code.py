@@ -8,7 +8,7 @@ from IPython.display import clear_output
 
 
 #@markdown <font color=ORANGE>🔗 Please enter the GitHub repository URL: 🔗
-GITHUB_URL = "https://github.com/SudoR2spr/text-leech-bot"  #@param {type:"string"}
+GITHUB_URL = "https://github.com/sumit10869/Ankit-Singh-Save-Bot"  #@param {type:"string"}
 
 # Determine base directory based on environment
 base_dir = './repo'  # Save repo in ./repo directory relative to current directory
@@ -77,6 +77,36 @@ os.environ['API_HASH'] = API_HASH
 
 BOT_TOKEN = ""  #@param {type:"string"}
 os.environ['BOT_TOKEN'] = BOT_TOKEN
+
+#@markdown <center> </font> <font color=green>✍️ Paste Your Telegram API HASH From ≫ my.telegram.org <img src='https://i.ibb.co/BPnZ2xy/Telegram-Api.png' height="40" /> </center> { display-mode: "form" }
+
+AUTH = ""  #@param {type:"string"}
+os.environ['AUTH'] = AUTH
+
+#@markdown <center> </font> <font color=green>✍️ Paste Your Telegram BOT TOKEN From ≫ @BotFather <img src='https://i.ibb.co/Fw8McpS/Telegram-Bot-token.png' height="40" /> </center> { display-mode: "form" }
+
+LOG_GROUP = ""  #@param {type:"string"}
+os.environ['LOG_GROUP'] = LOG_GROUP
+
+#@markdown <center> </font> <font color=green>✍️ Paste Your Telegram API HASH From ≫ my.telegram.org <img src='https://i.ibb.co/BPnZ2xy/Telegram-Api.png' height="40" /> </center> { display-mode: "form" }
+
+FORCESUB = ""  #@param {type:"string"}
+os.environ['FORCESUB'] = FORCESUB
+
+#@markdown <center> </font> <font color=green>✍️ Paste Your Telegram BOT TOKEN From ≫ @BotFather <img src='https://i.ibb.co/Fw8McpS/Telegram-Bot-token.png' height="40" /> </center> { display-mode: "form" }
+
+MONGODB = ""  #@param {type:"string"}
+os.environ['MONGODB'] = MONGODB
+
+#@markdown <center> </font> <font color=green>✍️ Paste Your Telegram API HASH From ≫ my.telegram.org <img src='https://i.ibb.co/BPnZ2xy/Telegram-Api.png' height="40" /> </center> { display-mode: "form" }
+
+SESSION = ""  #@param {type:"string"}
+os.environ['OWNER_ID'] = OWNER_ID
+
+#@markdown <center> </font> <font color=green>✍️ Paste Your Telegram BOT TOKEN From ≫ @BotFather <img src='https://i.ibb.co/Fw8McpS/Telegram-Bot-token.png' height="40" /> </center> { display-mode: "form" }
+
+OWNER_ID = ""  #@param {type:"string"}
+os.environ['OWNER_ID'] = OWNER_ID
 
 clear_output()
 
